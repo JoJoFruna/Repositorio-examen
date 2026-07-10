@@ -1,17 +1,19 @@
 def validar_no_vacio(texto):
     return texto.strip() != ""
 
-def validar_codigo_nuevo(codigo, producto):
+def validar_codigo_nuevo(codigo, productos):
     if not validar_no_vacio(codigo):
         return False
-    return codigo.upper() not in [k.upper() for k in productos.key()]
+    # Corregido .key() a .keys() y el uso del diccionario correcto
+    return codigo.upper() not in [k.upper() for k in productos.keys()]
 
 def validar_peso(peso_str):
     try:
-        precio = int(precio_str)
-        return precio > 0
+        # Corregido: antes usaba la variable 'precio' por error
+        peso = float(peso_str) 
+        return peso > 0
     except ValueError:
-        False
+        return False # Corregido: faltaba el return
 
 def validar_sn(respuesta):
     """Valida que la respuesta sea 's' o 'n'."""
@@ -32,7 +34,7 @@ def validar_unidades(unidades_str):
     except ValueError:
         return False
 
-#parte 2
+# parte 2
 
 def leer_opcion():
     while True:
@@ -93,17 +95,17 @@ def actualizar_precio(codigo, nuevo_precio, stock):
     return False
 
 def agregar_producto(codigo, nombre, categoria, marca, peso_kg, es_importado, es_para_cachorro, precio, unidades, productos, stock):
-    codigo.upper = codigo.upper()
-    if buscar_codigo(codigo.upper, productos):
+    codigo = codigo.upper() # Corregido asignación de método .upper()
+    if buscar_codigo(codigo, productos):
         return False
     
-    productos[codigo.upper] = [nombre, categoria, marca, peso_kg, es_importado, es_para_cachorro]
-    stock[codigo.upper] = [precio, unidades]
+    productos[codigo] = [nombre, categoria, marca, peso_kg, es_importado, es_para_cachorro]
+    stock[codigo] = [precio, unidades]
     return True
 
 def eliminar_producto(codigo, productos, stock):
     clave_real = None
-    for k in productos.key():
+    for k in productos.keys(): # Corregido .key() a .keys()
         if k.upper() == codigo.upper():
             clave_real = k
             break
@@ -179,7 +181,7 @@ def main():
                 else:
                     print("precio no valido. debe ser entero positivo.")
                 
-                otra_vez = input("¿desea actualizar otro precio? (s/n)").strip().lower()
+                otra_vez = input("¿desea actualizar otro precio? (s/n) ").strip().lower()
 
         elif opcion == 4:
             cod = input("Ingrese código del producto: ")
@@ -192,7 +194,8 @@ def main():
             prec = input("Ingrese precio: ")
             unid = input("Ingrese unidades: ")
             
-            if not validar_codigo_nuevo(cod, productos):
+            # Corregido: pasamos 'productos' en lugar del inexistente 'producto'
+            if not validar_codigo_nuevo(cod, productos): 
                 print("Error: Código inválido o ya existente.")
             elif not validar_no_vacio(nom):
                 print("Error: Nombre no puede estar vacío.")
@@ -211,7 +214,6 @@ def main():
             elif not validar_unidades(unid):
                 print("Error: Unidades inválidas.")
             else:
-
                 peso_val = float(peso)
                 imp_val = True if imp.lower() == 's' else False
                 cach_val = True if cach.lower() == 's' else False
