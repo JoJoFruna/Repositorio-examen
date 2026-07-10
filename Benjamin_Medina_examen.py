@@ -4,23 +4,20 @@ def validar_no_vacio(texto):
 def validar_codigo_nuevo(codigo, productos):
     if not validar_no_vacio(codigo):
         return False
-    # Corregido .key() a .keys() y el uso del diccionario correcto
     return codigo.upper() not in [k.upper() for k in productos.keys()]
 
 def validar_peso(peso_str):
     try:
-        # Corregido: antes usaba la variable 'precio' por error
         peso = float(peso_str) 
         return peso > 0
     except ValueError:
-        return False # Corregido: faltaba el return
+        return False 
 
 def validar_sn(respuesta):
     """Valida que la respuesta sea 's' o 'n'."""
     return respuesta.strip().lower() in ['s', 'n']
 
 def validar_precio(precio_str):
-    """Valida que el precio sea un entero mayor que cero."""
     try:
         precio = int(precio_str)
         return precio > 0
@@ -95,7 +92,7 @@ def actualizar_precio(codigo, nuevo_precio, stock):
     return False
 
 def agregar_producto(codigo, nombre, categoria, marca, peso_kg, es_importado, es_para_cachorro, precio, unidades, productos, stock):
-    codigo = codigo.upper() # Corregido asignación de método .upper()
+    codigo = codigo.upper() 
     if buscar_codigo(codigo, productos):
         return False
     
@@ -105,7 +102,7 @@ def agregar_producto(codigo, nombre, categoria, marca, peso_kg, es_importado, es
 
 def eliminar_producto(codigo, productos, stock):
     clave_real = None
-    for k in productos.keys(): # Corregido .key() a .keys()
+    for k in productos.keys(): 
         if k.upper() == codigo.upper():
             clave_real = k
             break
@@ -193,8 +190,7 @@ def main():
             cach = input("¿Es para cachorro? (s/n): ")
             prec = input("Ingrese precio: ")
             unid = input("Ingrese unidades: ")
-            
-            # Corregido: pasamos 'productos' en lugar del inexistente 'producto'
+
             if not validar_codigo_nuevo(cod, productos): 
                 print("Error: Código inválido o ya existente.")
             elif not validar_no_vacio(nom):
